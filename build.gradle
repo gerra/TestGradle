@@ -1,0 +1,50 @@
+group 'home'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // 1ый случай: в abstractclass НЕ реализуем метод Interface#foo()
+
+    // подслучай а: внутри abstractclass подключили interface с помощью implementation
+
+    // Если только эту зависимость подключить, то будет ошибка, что до интерфейса не добраться
+//    implementation project(':abstractclass')
+    // А если еще и эту, то ок, явно интерфейс подключаем же
+//    implementation project(':interface')
+
+    // подслучай б: внутри abstractclass подключили interface с помощью api
+    // Подключаем только это -- всё ок, потому что interface подключится транзитивно благодаря api
+//    implementation project(':abstractclass')
+
+    /////////////////////////////////////////
+
+    // 2ой подслучай: в abstractclass реализуем метод Interface#foo()
+
+    // подслучай а: внутри abstractclass подключили interface с помощью implementation
+
+    // Если только эту зависимость подключить, то будет ошибка, что до интерфейса не добраться
+    // !!!!! И это странно, потому что мы же в абстракном классе всё, что нужно реализовали !!!!!
+    // хотя мне кажется, что это норма, потому что даже если не используем методы интерфейса, мы должны
+    // табличку вирт.функций перегрузить в зависимости от родительских классов
+//    implementation project(':abstractclass')
+    // А если еще и эту, то ок, явно интерфейс подключаем же
+//    implementation project(':interface')
+    // НО! тут самое интересное:
+    // если подключать так: всёбудет огонь. потому что нам interface нужен только для компиляции,
+    // а в рантайме пусть разруливает abstractclass всё
+    implementation project(':abstractclass')
+    compileOnly project(':interface')
+    // А теперь можно слазить в Implementation#main и почитать что будет при подключении зависимостей
+    // таким образом
+
+    // подслучай б: внутри abstractclass подключили interface с помощью api
+    // тут опять всё ок, потому что эти условия еще мягче, чем в 1.б
+//    implementation project(':abstractclass')
+}

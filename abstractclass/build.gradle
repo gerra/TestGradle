@@ -1,0 +1,15 @@
+group 'home'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'java-library'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(':interface')
+}
