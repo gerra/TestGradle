@@ -35,14 +35,19 @@ dependencies {
     // НО! тут самое интересное:
     // если подключать так: всёбудет огонь. потому что нам interface нужен только для компиляции,
     // а в рантайме пусть разруливает abstractclass всё
-    implementation project(':abstractclass')
-    compileOnly project(':interface')
+//    implementation project(':abstractclass')
+//    compileOnly project(':interface')
     // А теперь можно слазить в Implementation#main и почитать что будет при подключении зависимостей
     // таким образом
 
     // подслучай б: внутри abstractclass подключили interface с помощью api
     // тут опять всё ок, потому что эти условия еще мягче, чем в 1.б
 //    implementation project(':abstractclass')
+
+//    Игры со вторым градлом:
+    compile(project (':abstractclass')) {
+        transitive = true;
+    }
 }
 
 subprojects { project ->

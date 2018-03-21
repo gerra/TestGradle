@@ -1,8 +1,9 @@
 apply plugin: 'java'
-apply plugin: 'java-library'
 
 sourceCompatibility = 1.8
 
 dependencies {
-    implementation project(':interface')
+    compile(project(':interface')) {
+        transitive = false;
+    }
 }
